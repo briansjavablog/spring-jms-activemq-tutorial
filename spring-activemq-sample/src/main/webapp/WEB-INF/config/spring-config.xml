@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+							http://www.springframework.org/schema/jee
+						    http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+
+	<!-- Use Springs JNDI support to look up JMS Connection Factory and Queue definitions from the
+	     container. This means that specific connection details are not embedded in the application
+	 -->
+	<jee:jndi-lookup id="mqConnectionFactory" jndi-name="java:comp/env/jms/mqConnectionFactory" />
+	<jee:jndi-lookup id="testQueueOne" jndi-name="java:comp/env/jms/testQueueOne" />
+	<jee:jndi-lookup id="testQueueTwo" jndi-name="java:comp/env/jms/testQueueTwo" />
+
+	<!-- Our message listener implementation that implements the JMS MessageListener interface and implements the
+		 onMessage method to process incoming messages
+	 -->
+	<bean id="testMessageListener" class="com.blog.spring.jms.TestMessageListener">
+    	<property name="testMessageSender" ref ="testMessageSender" />
+    </bean>
+
+	<!-- DefaultMessageListenerConatiner is the Spring equivalent to an EJB Message Driven Bean.
+	     It polls and consumes messages from a JMS queue.  The configuration below is as follows
+
+	     1. connectionFactory - the connection factory definition used to connect to the Message Broker
+	        which in our case is Active MQ
+	     2. destination - the Queue which the MessageListener container is listening on from incoming messages
+	     3. messageListener - the implementation class that will actually handle the incoming messages. The
+	        DeafultMesssageListener takes messages from the queue and passes them to the message listener for
+	        processing. We've defined our message listener above (testMessageListener)
+	     4. concurrentConsumers - this is the number of threads that the DeafultMesaegListenerContainer will
+	        spawn to handle incoming messages. The default is 1 but in our application we'll have 2 separate
+	        threads processing incoming messages.
+	  -->
+	<bean id="poiMessageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref ="mqConnectionFactory" />
+    	<property name="destination" ref ="testQueueOne"/>
+		<property name="messageListener" ref ="testMessageListener"/>
+		<property name="concurrentConsumers" value="2" />
+    </bean>
+
+	<!-- MessageSender is a simple POJO that we supply with a JMSTemplate and
+    	 the Queue that we want to send messages to
+     -->
+	<bean id="testMessageSender" class="com.blog.spring.jms.TestMessageSender">
+		<property name="jmsTemplate" ref="jmsTemplate"/>
+		<property name="testQueue" ref="testQueueTwo"/>
+	</bean>
+
+	<!-- JMSTemplate is a Spring template that allows us to communicate with
+		 a message broker via JMS. JMSTemplate takes care of boiler plate code such as exception handling
+		 and resource management such as connection pooling. This allows us concentrate on solving the 'business'
+		 problem. We supply the JMS template with the connection factory mentioned above
+     -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="mqConnectionFactory" />
+	</bean>
+
+</beans>

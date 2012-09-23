@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+   <!--
+   		Active MQ Connection Factory manages pooled connections
+   		to the ActiveMQ broker. Tomcat will connect with the
+   		broker using a TCP connection on port 61616 - this is the
+   		default port for ActiveMQ
+   -->
+   <Resource name="jms/mqConnectionFactory"
+  			 auth="Container"
+  			 type="org.apache.activemq.ActiveMQConnectionFactory"
+  			 description="JMS Connection Factory"
+        	 factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+        	 brokerURL="tcp://localhost:61616" />
+
+   <!--
+   		This is a reference to the first Queue we defined
+   		earlier in the ActiveMQ admin console
+   -->
+   <Resource name="jms/testQueueOne"
+	  		 auth="Container"
+	  		 type="org.apache.activemq.command.ActiveMQQueue"
+        	 factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+        	 physicalName="TestQueueOne"/>
+
+   <!--
+   		This is a reference to the second Queue we defined
+   		earlier in the ActiveMQ admin console
+   -->
+   <Resource name="jms/testQueueTwo"
+	  		 auth="Container"
+	  		 type="org.apache.activemq.command.ActiveMQQueue"
+        	 factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+        	 physicalName="TestQueueTwo"/>
+
+</Context>
