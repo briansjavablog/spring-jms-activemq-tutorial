@@ -12,7 +12,7 @@
 	 <properties>
         <releaseCandidate>1</releaseCandidate>
         <spring.version>3.1.1.RELEASE</spring.version>
-        <java.version>1.5</java.version>
+        <java.version>1.6</java.version>
         <jackson.mapper.version>1.5.6</jackson.mapper.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
