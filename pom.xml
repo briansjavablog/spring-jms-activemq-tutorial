@@ -9,19 +9,19 @@
 	<packaging>war</packaging>
 	<groupId>com.blog.messsaging</groupId>
 	<version>1.0</version>
-	 <properties>
-        <releaseCandidate>1</releaseCandidate>
-        <spring.version>3.1.1.RELEASE</spring.version>
-        <java.version>1.6</java.version>
-        <jackson.mapper.version>1.5.6</jackson.mapper.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.javadoc.reporting.version>2.7</maven.javadoc.reporting.version>
-        <commons.logging.version>1.1.1</commons.logging.version>
-        <log4j.version>1.2.16</log4j.version>
-        <context.path>spring-activemq-sample</context.path>
-		<jackson.mapper.version>1.5.6</jackson.mapper.version>
-    </properties>
+	<properties>
+           <releaseCandidate>1</releaseCandidate>
+           <spring.version>3.1.1.RELEASE</spring.version>
+           <java.version>1.6</java.version>
+           <jackson.mapper.version>1.5.6</jackson.mapper.version>
+           <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+           <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+           <maven.javadoc.reporting.version>2.7</maven.javadoc.reporting.version>
+           <commons.logging.version>1.1.1</commons.logging.version>
+           <log4j.version>1.2.16</log4j.version>
+           <context.path>spring-activemq-sample</context.path>
+	   <jackson.mapper.version>1.5.6</jackson.mapper.version>
+        </properties>
 	<build>
 		<resources>
 			<resource>
@@ -30,37 +30,41 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
+		<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>3.5.1</version>
+		<configuration>
+		  <source>1.6</source>
+		  <target>1.6</target>
+		           </configuration>
+		        </plugin>	
+		  	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warName>${context.path}</warName>
 				</configuration>
 			</plugin>
-		</plugins>
-	</build>
-	<dependencies>
-	<dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-all</artifactId>
-      <version>5.1.0</version>
-     <scope>compile</scope>
-    </dependency>
-    <dependency>
+			</plugins>
+		</build>
+		<dependencies>
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+	      <groupId>org.apache.activemq</groupId>
+	      <artifactId>activemq-all</artifactId>
+	      <version>5.1.0</version>
+	     <scope>compile</scope>
+	    </dependency>
+	    <dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jms</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-<!-- 			<dependency>
-				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-jms_1.1_spec</artifactId>
-				<version>1.1</version>
-			</dependency> -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
